@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Chuma Planner{% endblock %}
+
+{% block content %}
+<h1>Welcome to Chuma Planner</h1>
+<p>Kukonza Chuma pa Moyo Wanga</p>
+
+<div class="features">
+    <div class="feature">
+        <div class="feature-icon">💸</div>
+        <h3>Track Income</h3>
+        <p>Input your monthly income</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Smart Allocation</h3>
+        <p>Follow the 50/30/20 rule</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">📈</div>
+        <h3>Visual Overview</h3>
+        <p>See your budget breakdown</p>
+    </div>
+</div>
+
+<a href="{{ url_for('income') }}" class="btn">Get Started</a>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Budget Allocation - Chuma Planner{% endblock %}
+
+{% block content %}
+<h2>Budget Allocation</h2>
+<p>Customize your budget percentages or use the recommended 50/30/20 rule</p>
+<p><strong>Monthly Income: MWK{{ "%.2f"|format(income) }}</strong></p>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+<form method="POST">
+    <div class="allocation-grid">
+        
+        <div class="allocation-card">
+            <div class="allocation-header">
+                <span class="allocation-icon needs">🏠</span>
+                <h3>Needs</h3>
+            </div>
+            <p class="allocation-description">Essential expenses like rent, groceries, utilities</p>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="number" name="needs" value="{{ needs }}" min="0" max="100" required>
+                    <span class="percent-symbol">%</span>
+                </div>
+            </div>
+            <div class="amount-display needs">
+                MWK{{ "%.2f"|format(needs_amount) if needs_amount is defined else "%.2f"|format(income * needs / 100) }}
+            </div>
+        </div>
+
+        <div class="allocation-card">
+            <div class="allocation-header">
+                <span class="allocation-icon wants">🎯</span>
+                <h3>Wants</h3>
+            </div>
+            <p class="allocation-description">Entertainment, hobbies</p>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="number" name="wants" value="{{ wants }}" min="0" max="100" required>
+                    <span class="percent-symbol">%</span>
+                </div>
+            </div>
+            <div class="amount-display wants">
+                MWK{{ "%.2f"|format(wants_amount) if wants_amount is defined else "%.2f"|format(income * wants / 100) }}
+            </div>
+        </div>
+
+        <div class="allocation-card">
+            <div class="allocation-header">
+                <span class="allocation-icon savings">💎</span>
+                <h3>Savings</h3>
+            </div>
+            <p class="allocation-description">Emergency fund, investments, retirement</p>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="number" name="savings" value="{{ savings }}" min="0" max="100" required>
+                    <span class="percent-symbol">%</span>
+                </div>
+            </div>
+            <div class="amount-display savings">
+                MWK{{ "%.2f"|format(savings_amount) if savings_amount is defined else "%.2f"|format(income * savings / 100) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="total-display {% if total_percent is defined and total_percent != 100 %}invalid{% else %}valid{% endif %}">
+        Total: {{ total_percent if total_percent is defined else (needs + wants + savings) }}%
+        {% if total_percent is defined and total_percent != 100 %}
+            <div style="font-size: 0.9rem; margin-top: 5px; font-weight: normal;">
+                {% if total_percent < 100 %}
+                    You have {{ 100 - total_percent }}% unallocated
+                {% else %}
+                    You are over budget by {{ total_percent - 100 }}%
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="preset-buttons">
+        <p>Quick presets:</p>
+        <div class="preset-button-group">
+            <button type="submit" name="preset" value="50-30-20" class="btn btn-secondary preset-btn">50/30/20 Rule</button>
+            <button type="submit" name="preset" value="60-20-20" class="btn btn-secondary preset-btn">60/20/20</button>
+            <button type="submit" name="preset" value="70-20-10" class="btn btn-secondary preset-btn">70/20/10</button>
+        </div>
+    </div>
+
+    <div>
+        <a href="{{ url_for('income') }}" class="btn btn-secondary">Back</a>
+        <button type="submit" class="btn">View Budget</button>
+    </div>
+</form>
+
+<div class="info-section">
+    <h3>💡 Budget Guidelines</h3>
+    <div class="info-grid">
+        <div>
+            <h4>🏠 Needs (Essential)</h4>
+            <ul>
+                <li>Rent</li>
+                <li>Utilities</li>
+                <li>Groceries</li>
+                <li>Transportation</li>
+                <li>Medical Insurance</li>
+            </ul>
+        </div>
+        <div>
+            <h4>🎯 Wants (Lifestyle)</h4>
+            <ul>
+                <li>Entertainment</li>
+                <li>Hobbies</li>
+                <li>Shopping</li>
+                <li>Subscriptions</li>
+            </ul>
+        </div>
+        <div>
+            <h4>💎 Savings (Future)</h4>
+            <ul>
+                <li>Emergency fund</li>
+                <li>Investments</li>
+                <li>Goals</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
