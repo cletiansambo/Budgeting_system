@@ -3,7 +3,7 @@ import os
 import base64
 from io import BytesIO
 import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
+matplotlib.use('Agg')  
 import matplotlib.pyplot as plt
 
 app = Flask(__name__)
