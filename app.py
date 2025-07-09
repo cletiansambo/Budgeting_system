@@ -11,7 +11,7 @@ app.secret_key = 'your-secret-key-change-this'
 
 def create_pie_chart(budget_data):
     """Create a pie chart and return it as base64 encoded string"""
-    # Create figure and axis
+    # Create figure and axis for the pie chart
     fig, ax = plt.subplots(figsize=(8, 8))
     fig.patch.set_facecolor('white')
     
@@ -34,7 +34,7 @@ def create_pie_chart(budget_data):
         textprops={'fontsize': 12, 'fontweight': 'bold'}
     )
     
-    # Enhance the chart
+    # Customizing the chart
     for autotext in autotexts:
         autotext.set_color('white')
         autotext.set_fontweight('bold')
@@ -51,7 +51,7 @@ def create_pie_chart(budget_data):
     plt.savefig(buffer, format='png', bbox_inches='tight', dpi=150, facecolor='white')
     buffer.seek(0)
     image_base64 = base64.b64encode(buffer.getvalue()).decode()
-    plt.close(fig)  # Important: close the figure to free memory
+    plt.close(fig)  
     
     return image_base64
 
@@ -84,7 +84,7 @@ def allocation():
     
     income = session['income']
     
-    # Get current values from session or defaults
+    # Get current values from session or defaults for the 50/30/20 budget allocation
     needs_percent = session.get('needs_percent', 50)
     wants_percent = session.get('wants_percent', 30)
     savings_percent = session.get('savings_percent', 20)
@@ -95,12 +95,12 @@ def allocation():
             preset = request.form['preset']
             if preset == '50-30-20':
                 needs_percent, wants_percent, savings_percent = 50, 30, 20
-            elif preset == '60-20-20':
+            elif preset == '60-20-20': # Customizing the allocation to 60/20/20
                 needs_percent, wants_percent, savings_percent = 60, 20, 20
-            elif preset == '70-20-10':
+            elif preset == '70-20-10': # Customizing the allocation to 70/20/10
                 needs_percent, wants_percent, savings_percent = 70, 20, 10
             
-            # Store in session and redirect to show updated values
+            # Store in session and then redirect to show the updated values
             session['needs_percent'] = needs_percent
             session['wants_percent'] = wants_percent
             session['savings_percent'] = savings_percent
